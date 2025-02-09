@@ -1,7 +1,8 @@
 plugins {
-    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id ("maven-publish")
+    id ("com.android.library")
+
 
 }
 
@@ -10,11 +11,11 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.vaishali.customtoast"
+//        applicationId = "com.vaishali.customtoast"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+//        versionCode = 1
+//        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,7 +47,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.github.vaishaliichandel"
             artifactId = "CustomToastMessage"
-            version = "1.0.1"
+            version = "1.0.3"
 
             afterEvaluate {
                 from(components["release"])
