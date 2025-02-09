@@ -44,9 +44,9 @@ android {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.vaishali"
-            artifactId = "customToast"
-            version = "1.0"
+            groupId = "com.github.vaishaliichandel"
+            artifactId = "CustomToastMessage"
+            version = "1.0.1"
 
             afterEvaluate {
                 from(components["release"])
