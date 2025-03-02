@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="quick_snack_bar_default_background">#323232</color>
+    <color name="quick_snack_bar_default_text_color">#FFFFFF</color>
+    <color name="quick_snack_bar_default_action_text_color">#4fc3f7</color>
+    <color name="quick_snack_bar_default_action_ripple_color">#26000000</color>
+
+    <!--State-->
+    <color name="quick_snack_bar_state_success_background">#a5d6a7</color>
+    <color name="quick_snack_bar_state_success_border">#81c784</color>
+    <color name="quick_snack_bar_state_success_icon">#66bb6a</color>
+    <color name="quick_snack_bar_state_success_action">#2e7d32</color>
+
+    <color name="quick_snack_bar_state_failed_background">#ef9a9a</color>
+    <color name="quick_snack_bar_state_failed_border">#e57373</color>
+    <color name="quick_snack_bar_state_failed_icon">#ef5350</color>
+    <color name="quick_snack_bar_state_failed_action">#c62828</color>
+
+    <color name="quick_snack_bar_state_warning_background">#ffe082</color>
+    <color name="quick_snack_bar_state_warning_border">#ffca28</color>
+    <color name="quick_snack_bar_state_warning_icon">#ffb300</color>
+    <color name="quick_snack_bar_state_warning_action">#ff6f00</color>
+
+    <color name="quick_snack_bar_state_info_background">#e0f7fa</color>
+    <color name="quick_snack_bar_state_info_border">#b2ebf2</color>
+    <color name="quick_snack_bar_state_info_icon">#80deea</color>
+    <color name="quick_snack_bar_state_info_action">#00acc1</color>
+
+    <color name="quick_snack_bar_state_disable_background">#cfd8dc</color>
+    <color name="quick_snack_bar_state_disable_border">#b0bec5</color>
+    <color name="quick_snack_bar_state_disable_icon">#90a4ae</color>
+    <color name="quick_snack_bar_state_disable_action">#546e7a</color>
+
+    <color name="quick_snack_bar_color_white">#FFFFFF</color>
+    <color name="quick_snack_bar_color_black">#000000</color>
+
+</resources>

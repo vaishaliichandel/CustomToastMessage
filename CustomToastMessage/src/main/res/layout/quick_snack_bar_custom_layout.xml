@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snackBar_custom_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/snackBar_custom_imgIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_info_blue"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/snackBar_custom_txtMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/quick_snack_bar_message_margin_start"
+        android:layout_marginEnd="50dp"
+        android:layout_toEndOf="@id/snackBar_custom_imgIcon"
+        android:includeFontPadding="false"
+        android:paddingTop="@dimen/quick_snack_bar_vertical_padding"
+        android:paddingBottom="@dimen/quick_snack_bar_vertical_padding"
+        android:text="@string/appbar_scrolling_view_behavior"
+        android:textColor="@color/quick_snack_bar_color_black"
+        android:textSize="@dimen/quick_snack_bar_text_size" />
+
+    <TextView
+        android:id="@+id/snackBar_custom_btnAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/snackBar_custom_txtMessage"
+        android:layout_alignBottom="@id/snackBar_custom_txtMessage"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/bg_custom_quick_snack_bar_button"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:paddingStart="@dimen/quick_snack_bar_action_padding"
+        android:paddingTop="@dimen/quick_snack_bar_action_padding_vertical"
+        android:paddingEnd="@dimen/quick_snack_bar_action_padding"
+        android:paddingBottom="@dimen/quick_snack_bar_action_padding_vertical"
+        android:textColor="@color/quick_snack_bar_default_action_text_color"
+        android:textSize="@dimen/quick_snack_bar_text_size"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/snackBar_custom_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_close"
+        tools:ignore="ContentDescription" />
+</RelativeLayout>

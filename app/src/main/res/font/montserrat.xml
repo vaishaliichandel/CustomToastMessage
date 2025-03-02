@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:targetApi="o">
+
+    <!--
+    400	Normal
+    500	Medium
+    600	Semi Bold
+    700 Bold
+    -->
+
+    <!--Regular-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/montserrat_regular"/>
+    <!--Medium-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        android:font="@font/montserrat_medium"/>
+    <!--Semi Bold-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="600"
+        android:font="@font/montserrat_semi_bold"/>
+    <!--Bold-->
+    <!--<font
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:font="@font/montserrat_bold"/>-->
+
+    <!--Italic Regular-->
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/montserrat_italic"/>
+    <!--Italic Medium-->
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="500"
+        android:font="@font/montserrat_medium_italic"/>
+    <!--Italic Semi Bold-->
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="600"
+        android:font="@font/montserrat_semi_bold_italic"/>
+    <!--Italic Bold-->
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="700"
+        android:font="@font/montserrat_bold_italic"/>
+
+</font-family>

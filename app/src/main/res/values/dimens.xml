@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="snack_bar_corner_radius_small">10dp</dimen>
+    <dimen name="snack_bar_corner_radius">15dp</dimen>
+    <dimen name="snack_bar_corner_radius_large">30dp</dimen>
+    <dimen name="snack_bar_height">95dp</dimen>
+    <dimen name="snack_bar_border_size">2dp</dimen>
+    <dimen name="snack_bar_border_size_large">4dp</dimen>
+    <dimen name="snack_bar_border_size_xLarge">5dp</dimen>
+    <dimen name="snack_bar_text_size">10sp</dimen>
+</resources>
