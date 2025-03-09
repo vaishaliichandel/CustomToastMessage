@@ -37,6 +37,7 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/bg_custom_quick_snack_bar_button"
         android:gravity="center"
+        android:textAllCaps="false"
         android:includeFontPadding="false"
         android:paddingStart="@dimen/quick_snack_bar_action_padding"
         android:paddingTop="@dimen/quick_snack_bar_action_padding_vertical"
@@ -44,7 +45,6 @@
         android:paddingBottom="@dimen/quick_snack_bar_action_padding_vertical"
         android:textColor="@color/quick_snack_bar_default_action_text_color"
         android:textSize="@dimen/quick_snack_bar_text_size"
-        android:textStyle="bold"
         android:visibility="gone" />
 
     <ImageView
@@ -58,3 +58,5 @@
         android:src="@drawable/ic_close"
         tools:ignore="ContentDescription" />
 </RelativeLayout>
+
+

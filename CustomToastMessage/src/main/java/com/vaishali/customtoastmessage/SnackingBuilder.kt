@@ -15,14 +15,14 @@ open class SnackingBuilder {
         snackBar = Snacking(parentView)
         snackBar.useMargin()
         snackBar.backgroundColor(R.color.quick_snack_bar_color_white)
-        snackBar.cornerRadius(20F)
+        snackBar.cornerRadius(10F)
     }
 
     constructor(parentView: View, message: String?) {
         snackBar = Snacking(parentView, message)
         snackBar.useMargin()
         snackBar.backgroundColor(R.color.quick_snack_bar_color_white)
-        snackBar.cornerRadius(20F)
+        snackBar.cornerRadius(10F)
 
     }
 
@@ -30,7 +30,7 @@ open class SnackingBuilder {
         snackBar = Snacking(parentView, message, iconRes)
         snackBar.useMargin()
         snackBar.backgroundColor(R.color.quick_snack_bar_color_white)
-        snackBar.cornerRadius(20F)
+        snackBar.cornerRadius(10F)
 
     }
 
@@ -46,6 +46,11 @@ open class SnackingBuilder {
 
     fun messageMaxLines(lines: Int): SnackingBuilder {
         snackBar.messageMaxLines(lines)
+        return this
+    }
+
+    fun removeMargin(): SnackingBuilder {
+        snackBar.removeMargin()
         return this
     }
 
@@ -117,6 +122,15 @@ open class SnackingBuilder {
         return this
     }
 
+    fun actionD(
+        @DrawableRes actionTextRes: Int,
+        @ColorRes textColorRes: Int,
+        callback: Snacking.Callback
+    ): SnackingBuilder {
+        snackBar.actionD(actionTextRes, textColorRes, callback)
+        return this
+    }
+
     fun action(
         actionText: String,
         textColorCode: String,
@@ -132,11 +146,6 @@ open class SnackingBuilder {
         callback: Snacking.Callback
     ): SnackingBuilder {
         snackBar.action(actionTextRes, textColorCode, callback)
-        return this
-    }
-
-    fun cornerRadius(@DimenRes cornerRadiusRes: Int): SnackingBuilder {
-        snackBar.cornerRadius(cornerRadiusRes)
         return this
     }
 

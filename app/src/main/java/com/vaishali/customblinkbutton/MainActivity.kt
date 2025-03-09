@@ -20,8 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val parentView: View = findViewById(R.id.parentView)
-        val fab = findViewById<ExtendedFloatingActionButton>(R.id.fab)
-        helper = MainActivityHelper(parentView, fab)
+        helper = MainActivityHelper(parentView)
 
         val recyclerView = findViewById<RecyclerView>(R.id.act_main_recyclerView)
         val adapter = AdapterRecyclerView(callback())
@@ -31,22 +30,19 @@ class MainActivity : AppCompatActivity() {
         titles = arrayOf(
             "Basic",
             "With Elevation",
-            "With Icon",
+            "With Icon with custom tint",
             "With Action",
-            "With Margin",
+            "With close icon",
             "Corner Radius",
             "Corner Radius (Custom)",
             "With Border",
             "Background Color",
-            "Background Image",
             "Text Color",
             "Text Style",
             "Custom Font Family",
-            "Anchor View",
             "Top Position",
-            "With State",
             "Message Max Lines",
-            "Landscape Screen"
+            "Without Margin",
         )
         val list: MutableList<String> = ArrayList()
         titles?.let {
@@ -63,20 +59,17 @@ class MainActivity : AppCompatActivity() {
                     titles?.get(1) -> { helper?.snackBarWithElevation() }
                     titles?.get(2) -> { helper?.snackBarIcon() }
                     titles?.get(3) -> { helper?.snackBarAction() }
-                    titles?.get(4) -> { helper?.snackBarMargin() }
+                    titles?.get(4) -> { helper?.snackBarCloseAction() }
                     titles?.get(5) -> { helper?.snackBarCorner() }
                     titles?.get(6) -> { helper?.snackBarCornerCustom() }
                     titles?.get(7) -> { helper?.snackBarBorder() }
                     titles?.get(8) -> { helper?.snackBarBackground() }
-                    titles?.get(9) -> { helper?.snackBarBackground() }
-                    titles?.get(0) -> { helper?.snackBarTextColor() }
-                    titles?.get(11) -> { helper?.snackBarBold() }
-                    titles?.get(12) -> { helper?.snackBarFont() }
-                    titles?.get(13) -> { helper?.snackBarAnchor() }
-                    titles?.get(14) -> { helper?.snackBarPosition() }
-                    titles?.get(15) -> { helper?.snackBarState() }
-                    titles?.get(16) -> { helper?.snackBarMaxLines() }
-                    titles?.get(17) -> { helper?.snackBarLandscape() }
+                    titles?.get(9) -> { helper?.snackBarTextColor() }
+                    titles?.get(10) -> { helper?.snackBarBold() }
+                    titles?.get(11) -> { helper?.snackBarFont() }
+                    titles?.get(12) -> { helper?.snackBarPosition() }
+                    titles?.get(13) -> { helper?.snackBarMaxLines() }
+                    titles?.get(14) -> { helper?.snackWithoutMargin() }
                 }
             }
         }

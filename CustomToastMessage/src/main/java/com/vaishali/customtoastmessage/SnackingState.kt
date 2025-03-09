@@ -120,13 +120,8 @@ open class SnackingState(private val parentView: View, @States state: Int) {
         return this
     }
 
-    fun cornerRadius(@DimenRes cornerRadiusRes: Int): SnackingState {
+    fun cornerRadius(cornerRadiusRes: Float): SnackingState {
         snackBar.cornerRadius(cornerRadiusRes)
-        return this
-    }
-
-    fun cornerRadius(cornerRadius: Float): SnackingState {
-        snackBar.cornerRadius(cornerRadius)
         return this
     }
 
@@ -140,17 +135,6 @@ open class SnackingState(private val parentView: View, @States state: Int) {
         return this
     }
 
-    fun cornerRadius(
-        @DimenRes topLeftRes: Int,
-        @DimenRes topRightRes: Int,
-        @DimenRes bottomLeftRes: Int,
-        @DimenRes bottomRightRes: Int
-    ): SnackingState {
-        snackBar.cornerRadius(
-            topLeftRes, topRightRes, bottomLeftRes, bottomRightRes
-        )
-        return this
-    }
 
     fun border(@DimenRes borderRes: Int): SnackingState {
         var color = R.color.quick_snack_bar_state_success_border

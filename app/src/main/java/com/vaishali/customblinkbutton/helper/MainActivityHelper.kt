@@ -1,5 +1,6 @@
 package com.vaishali.customblinkbutton.helper
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.Toast
@@ -9,7 +10,7 @@ import com.vaishali.customtoastmessage.Snacking
 import com.vaishali.customtoastmessage.SnackingState
 
 
-class MainActivityHelper(parentView: View, private var fab: ExtendedFloatingActionButton?) {
+class MainActivityHelper(parentView: View) {
 
     private var parentView: View? = parentView
     private var context: Context? = null
@@ -50,10 +51,23 @@ class MainActivityHelper(parentView: View, private var fab: ExtendedFloatingActi
         }
     }
 
+    fun snackBarCloseAction() {
+        parentView?.let {
+            Snacking.Builder(it, "Click to dismiss message")
+                .actionD(com.vaishali.customtoastmessage.R.drawable.ic_close, R.color.teal_200, object : Snacking.Callback {
+                    override fun onActionClick(snackBar: Snacking?) {
+                        snackBar?.dismiss()
+                        toast("Action Click")
+                    }
+
+                }).build().show()
+        }
+    }
+
     fun snackBarCorner() {
         parentView?.let {
             Snacking.Builder(it, "This message with corner")
-                .cornerRadius(R.dimen.snack_bar_corner_radius).build().show()
+                .cornerRadius(30F).build().show()
         }
     }
 
@@ -81,13 +95,13 @@ class MainActivityHelper(parentView: View, private var fab: ExtendedFloatingActi
         parentView?.let {
             Snacking.Builder(it, "This message with border")
                 .border(R.dimen.snack_bar_border_size, R.color.colorPrimary).useMargin()
-                .cornerRadius(R.dimen.snack_bar_corner_radius_small).build().show()
+                .cornerRadius(10F).build().show()
         }
     }
 
     fun snackBarTextColor() {
         parentView?.let {
-            Snacking.Builder(it, "This is custom text color").textColor("#ffca28").build().show()
+            Snacking.Builder(it, "This is custom text color").textColor(R.color.teal_200).build().show()
         }
     }
 
@@ -105,17 +119,11 @@ class MainActivityHelper(parentView: View, private var fab: ExtendedFloatingActi
         }
     }
 
-    fun snackBarAnchor() {
-        parentView?.let {
-            Snacking.Builder(it, "This message with anchor view").anchorView(fab).build().show()
-        }
-    }
-
     fun snackBarPosition() {
         parentView?.let {
             Snacking.State(it, SnackingState.WARNING).message("This message is on top position")
                 .icon(R.drawable.ic_info).position(Snacking.TOP).useMargin(true)
-                .cornerRadius(R.dimen.snack_bar_corner_radius_large)
+                .cornerRadius(25F)
                 .border(R.dimen.snack_bar_border_size).action("Cancel", object : Snacking.Callback {
                     override fun onActionClick(snackBar: Snacking?) {
                         toast("Action Click")
@@ -125,27 +133,12 @@ class MainActivityHelper(parentView: View, private var fab: ExtendedFloatingActi
         }
     }
 
-    fun snackBarState() {
-        parentView?.let {
-            Snacking.State(it, SnackingState.State.INFO.ordinal)
-                .message("This message is using state").icon(R.drawable.ic_info).useMargin(true)
-                .cornerRadius(R.dimen.snack_bar_corner_radius_small)
-                .action("CLOSE", object : Snacking.Callback {
-                    override fun onActionClick(snackBar: Snacking?) {
-                        toast("Action Clicked")
-                        snackBar?.dismiss()
-
-                    }
-                })
-        }
-    }
-
     fun snackBarMaxLines() {
         parentView?.let {
             Snacking.Builder(
                 it,
                 "This is long message, this is long message, this is long message, this is long message, this is long message, this is long message"
-            ).action("LONG BUTTON TEXT", object : Snacking.Callback {
+            ).action("Long Button Text", object : Snacking.Callback {
                 override fun onActionClick(snackBar: Snacking?) {
                     toast("Action Click")
 
@@ -154,18 +147,12 @@ class MainActivityHelper(parentView: View, private var fab: ExtendedFloatingActi
         }
     }
 
-    fun snackBarLandscape() {
+    fun snackWithoutMargin() {
         parentView?.let {
-            Snacking.State(it, SnackingState.State.INFO.ordinal)
-                .message("This message is on landscape screen").icon(R.drawable.ic_info)
-                .useMargin(true).cornerRadius(R.dimen.snack_bar_corner_radius_small)
-                .action("CLOSE", object : Snacking.Callback {
-                    override fun onActionClick(snackBar: Snacking?) {
-
-                        toast("Action Click")
-                        snackBar?.dismiss()
-                    }
-                }).landscapeStyle(Snacking.CENTER).border(R.dimen.snack_bar_border_size).show()
+            Snacking.Builder(
+                it,
+                "This is a message"
+            ).removeMargin().build().show()
         }
     }
 

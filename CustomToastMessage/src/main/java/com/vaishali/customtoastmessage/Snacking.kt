@@ -85,6 +85,7 @@ class Snacking {
     // Views
     private var parent: RelativeLayout? = null
     private var imgIcon: ImageView? = null
+    private var closeIcon: ImageView? = null
     private var textMessage: TextView? = null
     private var textAction: TextView? = null
 
@@ -141,9 +142,20 @@ class Snacking {
         val customView = inflater.inflate(R.layout.quick_snack_bar_custom_layout, mParent, false)
         initView(customView)
         val mMessage = if (message == null) "This is null message" else message!!
-        textMessage!!.text = mMessage
+        textMessage?.text = mMessage
         applyIcon()
-        textAction!!.setOnClickListener {
+        textAction?.setOnClickListener {
+            if (callback != null) {
+                try {
+                    Thread.sleep(300)
+                    callback!!.onActionClick(this)
+                } catch (e: InterruptedException) {
+                    log("Callback thread interrupted")
+                }
+            }
+        }
+
+        closeIcon?.setOnClickListener {
             if (callback != null) {
                 try {
                     Thread.sleep(300)
@@ -191,6 +203,7 @@ class Snacking {
         imgIcon = layout.findViewById(R.id.snackBar_custom_imgIcon)
         textMessage = layout.findViewById(R.id.snackBar_custom_txtMessage)
         textAction = layout.findViewById(R.id.snackBar_custom_btnAction)
+        closeIcon = layout.findViewById(R.id.snackBar_custom_close)
     }
 
     fun message(@StringRes messageRes: Int) {
@@ -267,38 +280,50 @@ class Snacking {
 
     fun action(actionText: String, callback: Callback) {
         this.callback = callback
-        textAction!!.visibility = View.VISIBLE
-        textAction!!.text = actionText
+        textAction?.visibility = View.VISIBLE
+        textAction?.text = actionText
     }
 
     fun action(@StringRes actionTextRes: Int, callback: Callback) {
         this.callback = callback
-        textAction!!.visibility = View.VISIBLE
-        textAction!!.text = getString(actionTextRes)
+        textAction?.visibility = View.VISIBLE
+        textAction?.text = getString(actionTextRes)
+    }
+
+    fun actionD(@DrawableRes actionTextRes: Int, callback: Callback) {
+        this.callback = callback
+        closeIcon!!.visibility = View.VISIBLE
+        closeIcon!!.setImageResource(actionTextRes)
     }
 
     fun action(actionText: String, @ColorRes textColorRes: Int, callback: Callback) {
         action(actionText, callback)
         val color = getColor(textColorRes)
-        if (color != 0) textAction!!.setTextColor(color)
+        if (color != 0) textAction?.setTextColor(color)
     }
 
     fun action(@StringRes actionTextRes: Int, @ColorRes textColorRes: Int, callback: Callback) {
         action(actionTextRes, callback)
         val color = getColor(textColorRes)
-        if (color != 0) textAction!!.setTextColor(color)
+        if (color != 0) textAction?.setTextColor(color)
+    }
+
+    fun actionD(@DrawableRes actionTextRes: Int, @ColorRes textColorRes: Int, callback: Callback) {
+        actionD(actionTextRes, callback)
+        val color = getColor(textColorRes)
+        if (color != 0) textAction?.setTextColor(color)
     }
 
     fun action(actionText: String, textColorCode: String, callback: Callback) {
         action(actionText, callback)
         val color = parseColor(textColorCode)
-        if (color != 0) textAction!!.setTextColor(color)
+        if (color != 0) textAction?.setTextColor(color)
     }
 
     fun action(@StringRes actionTextRes: Int, textColorCode: String, callback: Callback) {
         action(actionTextRes, callback)
         val color = parseColor(textColorCode)
-        if (color != 0) textAction!!.setTextColor(color)
+        if (color != 0) textAction?.setTextColor(color)
     }
 
     fun cornerRadius(cornerRadius: Float) {
@@ -307,16 +332,6 @@ class Snacking {
             cornerTopRight = cornerRadius
             cornerBottomLeft = cornerRadius
             cornerBottomRight = cornerRadius
-        }
-    }
-
-    fun cornerRadius(@DimenRes cornerRadiusRes: Int) {
-        val cornerRadius = getDimenInt(cornerRadiusRes)
-        if (cornerRadius != 0) {
-            cornerTopLeft = cornerRadius.toFloat()
-            cornerTopRight = cornerRadius.toFloat()
-            cornerBottomLeft = cornerRadius.toFloat()
-            cornerBottomRight = cornerRadius.toFloat()
         }
     }
 
@@ -480,6 +495,10 @@ class Snacking {
         this.useMargin = true
     }
 
+    fun removeMargin() {
+        this.useMargin = false
+    }
+
     @SuppressLint("RestrictedApi")
     private fun applyMargin() {
         if (snackBar != null) {
@@ -517,7 +536,7 @@ class Snacking {
             }
 
             textMessage!!.post {
-                if (textMessage!!.lineCount > 2 || textAction!!.length() > 10) {
+                if (textMessage!!.lineCount > 2 || (textAction?.length()?:0) > 10) {
                     val paramsIcon =
                         imgIcon!!.layoutParams as RelativeLayout.LayoutParams
                     paramsIcon.removeRule(RelativeLayout.CENTER_VERTICAL)
@@ -545,18 +564,18 @@ class Snacking {
                     )
 
                     val paramsAction =
-                        textAction!!.layoutParams as RelativeLayout.LayoutParams
+                        textAction?.layoutParams as RelativeLayout.LayoutParams
                     paramsAction.removeRule(RelativeLayout.ALIGN_TOP)
                     paramsAction.removeRule(RelativeLayout.ALIGN_BOTTOM)
                     paramsAction.addRule(RelativeLayout.BELOW, textMessage!!.id)
 
-                    textAction!!.layoutParams = paramsAction
-                    val getActionPaddingVertical = textAction!!.paddingTop
+                    textAction?.layoutParams = paramsAction
+                    val getActionPaddingVertical = textAction?.paddingTop?:0
                     val count = getActionPaddingVertical / 2.5f
                     val actionPaddingVertical = getActionPaddingVertical - count.toInt()
-                    textAction!!.setPadding(
-                        textAction!!.paddingStart, actionPaddingVertical,
-                        textAction!!.paddingEnd, actionPaddingVertical
+                    textAction?.setPadding(
+                        textAction?.paddingStart?:0, actionPaddingVertical,
+                        textAction?.paddingEnd?:0, actionPaddingVertical
                     )
                     parent!!.setPadding(
                         0,
@@ -727,7 +746,7 @@ class Snacking {
                 )
                 else ResourcesCompat.getFont(parent!!.context, fontRes)
             textMessage!!.typeface = typeface
-            textAction!!.typeface = typeface
+            textAction?.typeface = typeface
         } catch (e: Resources.NotFoundException) {
             log("Font resource not found")
         }
@@ -738,7 +757,7 @@ class Snacking {
         val size = getDimen(fontSizeRes)
         if (size > 0) {
             textMessage!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
-            textAction!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+            textAction?.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
         }
     }
 
@@ -746,7 +765,7 @@ class Snacking {
         fontFamily(font)
         if (fontSize > 0) {
             textMessage!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
-            textAction!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
+            textAction?.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
         }
     }
 
@@ -794,7 +813,7 @@ class Snacking {
                 setSnackBarBackground(drawable)
             }
         }
-        val getDrawableButton = textAction!!.background
+        val getDrawableButton = textAction?.background
         if (getDrawableButton != null) {
             if (getDrawableButton is RippleDrawable) {
                 val getDrawableRipple = getDrawableButton.getDrawable(0)
@@ -807,7 +826,7 @@ class Snacking {
                                 cornerBottomLeft,
                                 cornerBottomRight
                             )
-                        textAction!!.background = getDrawableButton
+                        textAction?.background = getDrawableButton
                     }
                 }
             }
@@ -953,11 +972,11 @@ class Snacking {
     }
 
     private fun getDrawables(id: Int): Drawable? {
-        return ResourcesCompat.getDrawable(parent!!.context.resources, id, null)
+        return parent?.context?.resources?.let { ResourcesCompat.getDrawable(it, id, null) }
     }
 
     private fun setSnackBarBackground(drawable: Drawable?) {
-        if (snackBar != null) snackBar!!.view.background = drawable
+        if (snackBar != null) snackBar?.view?.background = drawable
     }
 
     private fun setSnackBarElevation(elevation: Float) {

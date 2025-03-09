@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/motion_toast_view"
+    android:id="@+id/snackBar_custom_parent"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_margin="@dimen/dimen_24"
     android:background="@android:color/white">
 
     <View
@@ -18,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/custom_toast_image"
+        android:id="@+id/snackBar_custom_imgIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="@dimen/dimen_8"
@@ -34,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dimen_8"
         android:layout_marginEnd="@dimen/dimen_8"
-        android:layout_toEndOf="@id/custom_toast_image"
+        android:layout_toEndOf="@id/snackBar_custom_imgIcon"
         android:gravity="start"
         android:orientation="vertical">
 
@@ -53,11 +52,11 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/custom_toast_image"
+            app:layout_constraintStart_toEndOf="@id/snackBar_custom_imgIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/custom_toast_description"
+            android:id="@+id/snackBar_custom_txtMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_12"
@@ -73,7 +72,7 @@
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/custom_toast_image"
+            app:layout_constraintStart_toEndOf="@id/snackBar_custom_imgIcon"
             app:layout_constraintTop_toBottomOf="@id/custom_toast_text" />
 
     </LinearLayout>
