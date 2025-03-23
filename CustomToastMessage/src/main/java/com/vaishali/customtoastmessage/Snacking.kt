@@ -35,9 +35,7 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
@@ -53,11 +51,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
+import com.vaishali.customtoastmessage.databinding.QuickSnackBarCustomLayoutBinding
 
 class Snacking {
     // Properties
     private val parentView: View
     private var message: String? = null
+    lateinit var binding: QuickSnackBarCustomLayoutBinding
 
     @DrawableRes
     private var iconRes = 0
@@ -81,13 +81,6 @@ class Snacking {
 
     // SnackBar
     private var snackBar: Snackbar? = null
-
-    // Views
-    private var parent: RelativeLayout? = null
-    private var imgIcon: ImageView? = null
-    private var closeIcon: ImageView? = null
-    private var textMessage: TextView? = null
-    private var textAction: TextView? = null
 
     // Callback
     private var callback: Callback? = null
@@ -119,6 +112,7 @@ class Snacking {
         this.message = message
         init()
     }
+
     constructor(parentView: View) {
         this.parentView = parentView
         init()
@@ -135,31 +129,30 @@ class Snacking {
     private fun init() {
         val context = parentView.context
         val inflater = LayoutInflater.from(context)
-        val mParent = parentView as ViewGroup
         snackBar = Snackbar.make(parentView, "", durationSnackBar)
         rotation = getRotation(context)
 
-        val customView = inflater.inflate(R.layout.quick_snack_bar_custom_layout, mParent, false)
-        initView(customView)
-        val mMessage = if (message == null) "This is null message" else message!!
-        textMessage?.text = mMessage
+       binding = QuickSnackBarCustomLayoutBinding.inflate(inflater)
+        initView(binding.root)
+        val mMessage = if (message == null) "This is null message" else message
+        binding.textMessage.text = mMessage
         applyIcon()
-        textAction?.setOnClickListener {
+        binding.textAction.setOnClickListener {
             if (callback != null) {
                 try {
                     Thread.sleep(300)
-                    callback!!.onActionClick(this)
+                    callback?.onActionClick(this)
                 } catch (e: InterruptedException) {
                     log("Callback thread interrupted")
                 }
             }
         }
 
-        closeIcon?.setOnClickListener {
+        binding.closeIcon.setOnClickListener {
             if (callback != null) {
                 try {
                     Thread.sleep(300)
-                    callback!!.onActionClick(this)
+                    callback?.onActionClick(this)
                 } catch (e: InterruptedException) {
                     log("Callback thread interrupted")
                 }
@@ -175,9 +168,9 @@ class Snacking {
                 drawable.setColor(getColor(R.color.quick_snack_bar_default_background))
             }
             setSnackBarBackground(drawable)
-            val snackBarLayout = snackBar!!.view as SnackbarLayout
-            snackBarLayout.addView(customView)
-            snackBar!!.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+            val snackBarLayout = snackBar?.view as SnackbarLayout
+            snackBarLayout.addView(binding.root)
+            snackBar?.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
 
             if (parentView is CoordinatorLayout) {
                 for (i in 0 until parentView.getChildCount()) {
@@ -194,58 +187,57 @@ class Snacking {
         }
     }
 
-    fun elevation(elevation : Float){
+    fun elevation(elevation: Float) {
         setSnackBarElevation(elevation)
 
     }
+
     private fun initView(layout: View) {
-        parent = layout.findViewById(R.id.snackBar_custom_parent)
-        imgIcon = layout.findViewById(R.id.snackBar_custom_imgIcon)
-        textMessage = layout.findViewById(R.id.snackBar_custom_txtMessage)
-        textAction = layout.findViewById(R.id.snackBar_custom_btnAction)
-        closeIcon = layout.findViewById(R.id.snackBar_custom_close)
     }
 
     fun message(@StringRes messageRes: Int) {
         this.message = getString(messageRes)
-        textMessage!!.text = message
+        binding.textMessage.text = message
     }
 
     fun message(message: String?) {
         this.message = message
-        textMessage!!.text = message
+        binding.textMessage.text = message
     }
 
     fun messageMaxLines(lines: Int) {
         if (lines > 0) {
-            textMessage!!.maxLines = lines
-            textMessage!!.ellipsize = TextUtils.TruncateAt.END
+           binding.textMessage.maxLines = lines
+           binding.textMessage.ellipsize = TextUtils.TruncateAt.END
         }
     }
 
     fun textColor(@ColorRes colorRes: Int) {
         val color = getColor(colorRes)
-        if (color != 0) textMessage!!.setTextColor(color)
+        if (color != 0) binding.textMessage.setTextColor(color)
     }
 
     fun textColor(colorCode: String) {
         val color = parseColor(colorCode)
-        if (color != 0) textMessage!!.setTextColor(color)
+        if (color != 0) binding.textMessage.setTextColor(color)
     }
 
     fun textStyle(@TextStyle style: Int) {
         when (style) {
             BOLD -> {
-                textMessage!!.setTypeface(textMessage!!.typeface, Typeface.BOLD)
+                binding.textMessage.setTypeface(binding.textMessage.typeface, Typeface.BOLD)
             }
+
             ITALIC -> {
-                textMessage!!.setTypeface(textMessage!!.typeface, Typeface.ITALIC)
+                binding.textMessage.setTypeface(binding.textMessage.typeface, Typeface.ITALIC)
             }
+
             BOLD_ITALIC -> {
-                textMessage!!.setTypeface(textMessage!!.typeface, Typeface.BOLD_ITALIC)
+                binding. textMessage.setTypeface(binding.textMessage.typeface, Typeface.BOLD_ITALIC)
             }
+
             else -> {
-                textMessage!!.setTypeface(textMessage!!.typeface, Typeface.NORMAL)
+                binding.textMessage.setTypeface(binding.textMessage.typeface, Typeface.NORMAL)
             }
         }
     }
@@ -259,71 +251,71 @@ class Snacking {
         this.iconRes = iconRes
         applyIcon()
         val color = getColor(colorRes)
-        if (color != 0) imgIcon!!.setColorFilter(color)
+        if (color != 0) binding.imgIcon.setColorFilter(color)
     }
 
     fun icon(@DrawableRes iconRes: Int, colorCode: String) {
         this.iconRes = iconRes
         val color = parseColor(colorCode)
-        if (color != 0) imgIcon!!.setColorFilter(color)
+        if (color != 0) binding.imgIcon.setColorFilter(color)
         applyIcon()
     }
 
     private fun applyIcon() {
         if (iconRes != 0) {
-            imgIcon!!.visibility = View.VISIBLE
-            imgIcon!!.setImageResource(iconRes)
+            binding.imgIcon.visibility = View.VISIBLE
+            binding.imgIcon.setImageResource(iconRes)
         } else {
-            imgIcon!!.visibility = View.GONE
+            binding.imgIcon.visibility = View.GONE
         }
     }
 
     fun action(actionText: String, callback: Callback) {
         this.callback = callback
-        textAction?.visibility = View.VISIBLE
-        textAction?.text = actionText
+        binding.textAction.visibility = View.VISIBLE
+        binding. textAction.text = actionText
     }
 
     fun action(@StringRes actionTextRes: Int, callback: Callback) {
         this.callback = callback
-        textAction?.visibility = View.VISIBLE
-        textAction?.text = getString(actionTextRes)
+        binding. textAction.visibility = View.VISIBLE
+        binding. textAction.text = getString(actionTextRes)
     }
 
     fun actionD(@DrawableRes actionTextRes: Int, callback: Callback) {
         this.callback = callback
-        closeIcon!!.visibility = View.VISIBLE
-        closeIcon!!.setImageResource(actionTextRes)
+        binding.closeIcon.visibility = View.VISIBLE
+        binding.closeIcon.setImageResource(actionTextRes)
     }
 
     fun action(actionText: String, @ColorRes textColorRes: Int, callback: Callback) {
         action(actionText, callback)
         val color = getColor(textColorRes)
-        if (color != 0) textAction?.setTextColor(color)
+        if (color != 0)binding. textAction.setTextColor(color)
     }
 
     fun action(@StringRes actionTextRes: Int, @ColorRes textColorRes: Int, callback: Callback) {
         action(actionTextRes, callback)
         val color = getColor(textColorRes)
-        if (color != 0) textAction?.setTextColor(color)
+        if (color != 0) binding.textAction.setTextColor(color)
     }
 
     fun actionD(@DrawableRes actionTextRes: Int, @ColorRes textColorRes: Int, callback: Callback) {
         actionD(actionTextRes, callback)
         val color = getColor(textColorRes)
-        if (color != 0) textAction?.setTextColor(color)
+        if (color != 0) binding.textAction.setTextColor(color)
     }
 
     fun action(actionText: String, textColorCode: String, callback: Callback) {
         action(actionText, callback)
         val color = parseColor(textColorCode)
-        if (color != 0) textAction?.setTextColor(color)
+        if (color != 0) binding.textAction.setTextColor(color)
     }
 
     fun action(@StringRes actionTextRes: Int, textColorCode: String, callback: Callback) {
         action(actionTextRes, callback)
         val color = parseColor(textColorCode)
-        if (color != 0) textAction?.setTextColor(color)
+        if (color != 0) binding.textAction.setTextColor(color)
     }
 
     fun cornerRadius(cornerRadius: Float) {
@@ -372,9 +364,9 @@ class Snacking {
         topLeft: Float, topRight: Float, bottomLeft: Float, bottomRight: Float
     ) {
         if (bitmapDrawable.bitmap != null) {
-            parent!!.post {
+            binding.root.post {
                 var scaledBitmap: Bitmap? = null
-                val sWidth = parent!!.context.resources.displayMetrics.widthPixels
+                val sWidth = binding.root.context.resources.displayMetrics.widthPixels
                 val padding =
                     getDimenInt(R.dimen.quick_snack_bar_margin_start_bottom_end)
                 val totalWidth = sWidth - (if (useMargin) (padding * 2) else 0)
@@ -386,7 +378,7 @@ class Snacking {
                     log("Bitmap size error: " + e.message)
                 }
                 if (scaledBitmap != null) {
-                    val snackBarTotalHeight = snackBar!!.view.height
+                    val snackBarTotalHeight = snackBar?.view?.height?:0
                     val halfBitmap = scaledBitmap.height.toFloat() / 2f
                     val halfSnackBarHeight = snackBarTotalHeight.toFloat() / 2f
                     val startY = halfBitmap - halfSnackBarHeight
@@ -415,7 +407,7 @@ class Snacking {
                     val rect =
                         Rect(0, 0, output.width, output.height)
                     val rectF = RectF()
-                    rectF[0f, 0f, totalWidth.toFloat()] = snackBar!!.view.height.toFloat()
+                    rectF[0f, 0f, totalWidth.toFloat()] = snackBar?.view?.height?.toFloat()?:0f
                     val path = Path()
                     path.addRoundRect(rectF, arrCorner, Path.Direction.CW)
                     canvas.drawARGB(0, 0, 0, 0)
@@ -433,7 +425,7 @@ class Snacking {
                         canvas.drawPath(path, paintBorder)
                     }
                     val finalDrawable: Drawable =
-                        BitmapDrawable(parent!!.context.resources, output)
+                        BitmapDrawable(binding.root.context.resources, output)
                     setSnackBarBackground(finalDrawable)
                 }
             }
@@ -469,10 +461,10 @@ class Snacking {
         }
     }
 
-    fun border(borderSize: Float, borderColorCode: String) {
+    fun border(borderSize: Float, @ColorRes borderColorRes: Int) {
         if (borderSize > 0) {
             this.borderSize = borderSize
-            val color = parseColor(borderColorCode)
+            val color = getColor(borderColorRes)
             if (color != 0) this.borderColor = color
         }
     }
@@ -502,17 +494,17 @@ class Snacking {
     @SuppressLint("RestrictedApi")
     private fun applyMargin() {
         if (snackBar != null) {
-            val params = snackBar!!.view.layoutParams as MarginLayoutParams
+            val params = snackBar?.view?.layoutParams as MarginLayoutParams
             if (!useMargin) {
                 params.setMargins(0, 0, 0, 0)
-                val snackBarLayout = snackBar!!.view as SnackbarLayout
+                val snackBarLayout = snackBar?.view as SnackbarLayout
                 snackBarLayout.setPadding(0, 0, 0, 0)
             } else {
                 val size = getDimenInt(R.dimen.quick_snack_bar_margin_start_bottom_end)
                 params.setMargins(size, 0, size, size)
 //                setSnackBarElevation(getDimen(R.dimen.quick_snack_bar_default_elevation))
             }
-            snackBar!!.view.layoutParams = params
+            snackBar?.view?.layoutParams = params
         }
     }
 
@@ -535,12 +527,12 @@ class Snacking {
                 }
             }
 
-            textMessage!!.post {
-                if (textMessage!!.lineCount > 2 || (textAction?.length()?:0) > 10) {
+            binding.textMessage.post {
+                if (binding.textMessage.lineCount > 2 || (binding.textAction.length() ?: 0) > 10) {
                     val paramsIcon =
-                        imgIcon!!.layoutParams as RelativeLayout.LayoutParams
+                        binding.imgIcon.layoutParams as RelativeLayout.LayoutParams
                     paramsIcon.removeRule(RelativeLayout.CENTER_VERTICAL)
-                    paramsIcon.addRule(RelativeLayout.ALIGN_TOP, textMessage!!.id)
+                    paramsIcon.addRule(RelativeLayout.ALIGN_TOP,binding. textMessage.id)
 
                     val getMarginTop =
                         getDimenInt(R.dimen.quick_snack_bar_vertical_padding)
@@ -550,34 +542,34 @@ class Snacking {
                         getDimenInt(R.dimen.quick_snack_bar_icon_margin_start),
                         marginTop, 0, 0
                     )
-                    imgIcon!!.layoutParams = paramsIcon
+                    binding.imgIcon.layoutParams = paramsIcon
 
                     val paramsMessage =
-                        textMessage!!.layoutParams as RelativeLayout.LayoutParams
+                        binding.textMessage.layoutParams as RelativeLayout.LayoutParams
                     paramsMessage.removeRule(RelativeLayout.START_OF)
-                    textMessage!!.layoutParams = paramsMessage
-                    textMessage!!.setPadding(
-                        textMessage!!.paddingStart,
-                        textMessage!!.paddingTop,
-                        textMessage!!.paddingEnd,
+                 binding.  textMessage.layoutParams = paramsMessage
+                 binding.  textMessage.setPadding(
+                 binding.      textMessage.paddingStart,
+                 binding.      textMessage.paddingTop,
+                 binding.      textMessage.paddingEnd,
                         getDimenInt(R.dimen.quick_snack_bar_default_elevation)
                     )
 
                     val paramsAction =
-                        textAction?.layoutParams as RelativeLayout.LayoutParams
+                        binding.textAction.layoutParams as RelativeLayout.LayoutParams
                     paramsAction.removeRule(RelativeLayout.ALIGN_TOP)
                     paramsAction.removeRule(RelativeLayout.ALIGN_BOTTOM)
-                    paramsAction.addRule(RelativeLayout.BELOW, textMessage!!.id)
+                    paramsAction.addRule(RelativeLayout.BELOW, binding.textMessage.id)
 
-                    textAction?.layoutParams = paramsAction
-                    val getActionPaddingVertical = textAction?.paddingTop?:0
+                    binding.textAction.layoutParams = paramsAction
+                    val getActionPaddingVertical = binding.textAction.paddingTop ?: 0
                     val count = getActionPaddingVertical / 2.5f
                     val actionPaddingVertical = getActionPaddingVertical - count.toInt()
-                    textAction?.setPadding(
-                        textAction?.paddingStart?:0, actionPaddingVertical,
-                        textAction?.paddingEnd?:0, actionPaddingVertical
+                    binding.textAction.setPadding(
+                        binding.textAction.paddingStart , actionPaddingVertical,
+                        binding. textAction.paddingEnd , actionPaddingVertical
                     )
-                    parent!!.setPadding(
+                    binding.root.setPadding(
                         0,
                         0,
                         0,
@@ -589,8 +581,8 @@ class Snacking {
     }
 
     private fun setOnPosition() {
-        val param = snackBar!!.view.layoutParams
-        snackBar!!.setDuration(BaseTransientBottomBar.LENGTH_INDEFINITE)
+        val param = snackBar?.view?.layoutParams
+        snackBar?.setDuration(BaseTransientBottomBar.LENGTH_INDEFINITE)
         if (param != null) {
             when (param) {
                 is CoordinatorLayout.LayoutParams -> {
@@ -602,13 +594,16 @@ class Snacking {
                 }
 
                 is RelativeLayout.LayoutParams -> {
-                    paramRelative(param).addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+                    paramRelative(param).addRule(
+                        RelativeLayout.ALIGN_PARENT_TOP,
+                        RelativeLayout.TRUE
+                    )
                 }
             }
-            snackBar!!.view.layoutParams = param
-            snackBar!!.view.startAnimation(
+            snackBar?.view?.layoutParams = param
+            snackBar?.view?.startAnimation(
                 AnimationUtils.loadAnimation(
-                    parent!!.context,
+                    binding.root.context,
                     R.anim.anim_quick_snack_bar_slide_bottom
                 )
             )
@@ -616,12 +611,12 @@ class Snacking {
     }
 
     private fun setOnLandscape(type: Int) {
-        val param = snackBar!!.view.layoutParams
-        val screenWidth = getWidthScreen(parent!!.context)
+        val param = snackBar?.view?.layoutParams
+        val screenWidth = getWidthScreen(binding.root.context)
         if (landscapeWidth > 0) {
-            if (landscapeWidth < screenWidth) param.width = landscapeWidth
+            if (landscapeWidth < screenWidth) param?.width = landscapeWidth
         } else {
-            param.width = screenWidth - (screenWidth / 2.5f).toInt()
+            param?.width = screenWidth - (screenWidth / 2.5f).toInt()
         }
         if (param is CoordinatorLayout.LayoutParams) {
             if (landscapeStyle == LEFT) {
@@ -679,31 +674,31 @@ class Snacking {
                 paramRelative(param).addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
             }
         }
-        snackBar!!.view.layoutParams = param
-        if (type == 0) snackBar!!.view.startAnimation(
-            AnimationUtils.loadAnimation(parent!!.context, R.anim.anim_quick_snack_bar_slide_bottom)
+        snackBar?.view?.layoutParams = param
+        if (type == 0) snackBar?.view?.startAnimation(
+            AnimationUtils.loadAnimation(binding.root.context, R.anim.anim_quick_snack_bar_slide_bottom)
         )
     }
 
     fun heightRes(@DimenRes heightRes: Int) {
         val mHeight = getDimenInt(heightRes)
         if (mHeight > 0) {
-            val param = parent!!.layoutParams
+            val param = binding.root.layoutParams
             param.height = mHeight
-            parent!!.layoutParams = param
+            binding.root.layoutParams = param
         }
     }
 
     fun height(height: Int) {
         if (height > 0) {
-            val param = parent!!.layoutParams
+            val param = binding.root.layoutParams
             param.height = height
-            parent!!.layoutParams = param
+            binding.root.layoutParams = param
         }
     }
 
     fun anchorView(anchorView: View?) {
-        if (anchorView != null) snackBar!!.setAnchorView(anchorView)
+        if (anchorView != null) snackBar?.setAnchorView(anchorView)
     }
 
     fun duration(@Duration duration: Int) {
@@ -711,14 +706,16 @@ class Snacking {
             LONG -> {
                 BaseTransientBottomBar.LENGTH_LONG
             }
+
             INDEFINITE -> {
                 BaseTransientBottomBar.LENGTH_INDEFINITE
             }
+
             else -> {
                 BaseTransientBottomBar.LENGTH_SHORT
             }
         }
-        if (snackBar != null) snackBar!!.setDuration(durationSnackBar)
+        if (snackBar != null) snackBar?.setDuration(durationSnackBar)
     }
 
     fun position(@Position position: Int) {
@@ -741,12 +738,12 @@ class Snacking {
     fun fontFamily(@FontRes fontRes: Int) {
         try {
             val typeface =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) parent!!.context.resources.getFont(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) binding.root.context.resources.getFont(
                     fontRes
                 )
-                else ResourcesCompat.getFont(parent!!.context, fontRes)
-            textMessage!!.typeface = typeface
-            textAction?.typeface = typeface
+                else ResourcesCompat.getFont(binding.root.context, fontRes)
+           binding.textMessage.typeface = typeface
+           binding.textAction.typeface = typeface
         } catch (e: Resources.NotFoundException) {
             log("Font resource not found")
         }
@@ -756,21 +753,21 @@ class Snacking {
         fontFamily(fontRes)
         val size = getDimen(fontSizeRes)
         if (size > 0) {
-            textMessage!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
-            textAction?.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+           binding. textMessage.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+           binding. textAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
         }
     }
 
     fun fontFamily(@FontRes font: Int, fontSize: Float) {
         fontFamily(font)
         if (fontSize > 0) {
-            textMessage!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
-            textAction?.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
+           binding. textMessage.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
+           binding. textAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
         }
     }
 
     fun swipeToDismiss(swipeToDismiss: Boolean) {
-        if (!swipeToDismiss) snackBar!!.setBehavior(
+        if (!swipeToDismiss) snackBar?.setBehavior(
             object : BaseTransientBottomBar.Behavior() {
                 override fun canSwipeDismissView(child: View): Boolean {
                     return false
@@ -780,7 +777,7 @@ class Snacking {
     }
 
     private fun applyBackground() {
-        snackBar!!.view.backgroundTintList = null
+        snackBar?.view?.backgroundTintList = null
         var getDrawable = getDrawable(backgroundRes)
         if (getDrawable is BitmapDrawable) {
             applyBackgroundBitmap(
@@ -794,7 +791,7 @@ class Snacking {
             val canvas = Canvas(bitmap)
             getDrawable.setBounds(0, 0, getDrawable.intrinsicWidth, getDrawable.intrinsicHeight)
             getDrawable.draw(canvas)
-            val bitmapDrawable = BitmapDrawable(parent!!.context.resources, bitmap)
+            val bitmapDrawable = BitmapDrawable(binding.root.context.resources, bitmap)
             applyBackgroundBitmap(
                 bitmapDrawable, cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight
             )
@@ -813,7 +810,7 @@ class Snacking {
                 setSnackBarBackground(drawable)
             }
         }
-        val getDrawableButton = textAction?.background
+        val getDrawableButton = binding.textAction.background
         if (getDrawableButton != null) {
             if (getDrawableButton is RippleDrawable) {
                 val getDrawableRipple = getDrawableButton.getDrawable(0)
@@ -826,7 +823,7 @@ class Snacking {
                                 cornerBottomLeft,
                                 cornerBottomRight
                             )
-                        textAction?.background = getDrawableButton
+                        binding.textAction.background = getDrawableButton
                     }
                 }
             }
@@ -834,14 +831,14 @@ class Snacking {
     }
 
     fun show() {
-        if (!snackBar!!.isShown) {
+        if (!(snackBar?.isShown == true)) {
             applyMargin()
             applyPosition()
             applyBackground()
             if (position == TOP) {
                 showWithTopPosition()
             } else {
-                snackBar!!.show()
+                snackBar?.show()
             }
         }
     }
@@ -854,40 +851,40 @@ class Snacking {
                     if (child is FloatingActionButton) child else if (child is ExtendedFloatingActionButton) child else null
                 if (fab != null) {
                     val anim = AnimationUtils.loadAnimation(
-                        parent!!.context, R.anim.anim_quick_snack_bar_hide_fab
+                        binding.root.context, R.anim.anim_quick_snack_bar_hide_fab
                     )
                     anim.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation) {}
                         override fun onAnimationEnd(animation: Animation) {
-                            fab!!.visibility = View.INVISIBLE
-                            snackBar!!.show()
+                            fab?.visibility = View.INVISIBLE
+                            snackBar?.show()
                         }
 
                         override fun onAnimationRepeat(animation: Animation) {}
                     })
-                    fab!!.startAnimation(anim)
+                    fab?.startAnimation(anim)
                     break
                 }
             }
-            if (fab == null) snackBar!!.show()
+            if (fab == null) snackBar?.show()
         } else {
-            snackBar!!.show()
+            snackBar?.show()
         }
         if (durationSnackBar != BaseTransientBottomBar.LENGTH_INDEFINITE) {
-            snackBar!!.addCallback(object : Snackbar.Callback() {
+            snackBar?.addCallback(object : Snackbar.Callback() {
                 override fun onShown(sb: Snackbar) {
                     super.onShown(sb)
                     val duration =
                         if (durationSnackBar == BaseTransientBottomBar.LENGTH_SHORT) 2000 else 3250
                     handler = Handler(Looper.getMainLooper())
-                    handler!!.postDelayed({
-                        if (snackBar!!.isShown) {
-                            snackBar!!.view.startAnimation(
+                    handler?.postDelayed({
+                        if (snackBar?.isShown == true) {
+                            snackBar?.view?.startAnimation(
                                 AnimationUtils.loadAnimation(
-                                    parent!!.context, R.anim.anim_quick_snack_bar_slide_top
+                                    binding.root.context, R.anim.anim_quick_snack_bar_slide_top
                                 )
                             )
-                            snackBar!!.dismiss()
+                            snackBar?.dismiss()
                         }
                     }, duration.toLong())
                 }
@@ -895,11 +892,11 @@ class Snacking {
                 override fun onDismissed(transientBottomBar: Snackbar, event: Int) {
                     super.onDismissed(transientBottomBar, event)
                     if (fab != null) {
-                        fab!!.visibility = View.VISIBLE
+                        fab?.visibility = View.VISIBLE
                         val anim = AnimationUtils.loadAnimation(
-                            parent!!.context, R.anim.anim_quick_snack_bar_show_fab
+                            binding.root.context, R.anim.anim_quick_snack_bar_show_fab
                         )
-                        fab!!.startAnimation(anim)
+                        fab?.startAnimation(anim)
                     }
                 }
             })
@@ -907,23 +904,23 @@ class Snacking {
     }
 
     fun dismiss() {
-        if (snackBar!!.isShown) {
+        if (snackBar?.isShown == true) {
             if (position == TOP) {
-                snackBar!!.view.startAnimation(
+                snackBar?.view?.startAnimation(
                     AnimationUtils.loadAnimation(
-                        parent!!.context, R.anim.anim_quick_snack_bar_slide_top
+                        binding.root.context, R.anim.anim_quick_snack_bar_slide_top
                     )
                 )
             }
-            snackBar!!.dismiss()
-            if (handler != null) handler!!.removeCallbacksAndMessages(null)
+            snackBar?.dismiss()
+            if (handler != null) handler?.removeCallbacksAndMessages(null)
         }
     }
 
     private fun getDimenInt(id: Int): Int {
         var finalValue = 0
         try {
-            finalValue = parent!!.context.resources.getDimensionPixelSize(id)
+            finalValue = binding.root.context.resources.getDimensionPixelSize(id)
         } catch (e: Resources.NotFoundException) {
             log("Dimen not found")
         }
@@ -933,7 +930,7 @@ class Snacking {
     private fun getDimen(id: Int): Float {
         var finalValue = 0f
         try {
-            finalValue = parent!!.context.resources.getDimension(id)
+            finalValue = binding.root.context.resources.getDimension(id)
         } catch (e: Resources.NotFoundException) {
             log("Dimen not found")
         }
@@ -943,7 +940,7 @@ class Snacking {
     private fun getColor(id: Int): Int {
         var finalColor = 0
         try {
-            finalColor = ContextCompat.getColor(parent!!.context, id)
+            finalColor = ContextCompat.getColor(binding.root.context, id)
         } catch (e: Resources.NotFoundException) {
             log("Color resource not found")
         }
@@ -972,7 +969,7 @@ class Snacking {
     }
 
     private fun getDrawables(id: Int): Drawable? {
-        return parent?.context?.resources?.let { ResourcesCompat.getDrawable(it, id, null) }
+        return binding.root.context?.resources?.let { ResourcesCompat.getDrawable(it, id, null) }
     }
 
     private fun setSnackBarBackground(drawable: Drawable?) {
@@ -992,7 +989,7 @@ class Snacking {
     private fun getString(id: Int): String {
         var message = "null"
         try {
-            message = parent!!.context.resources.getString(id)
+            message = binding.root.context.resources.getString(id)
         } catch (e: Resources.NotFoundException) {
             log("String resource not found")
         }
@@ -1047,7 +1044,7 @@ class Snacking {
     }
 
     // State Class
-    class State(parentView: View, state: Int) : SnackingState(parentView, state)
+//    class State(parentView: View, state: Int) : SnackingState(parentView, state)
 
     companion object {
         const val NORMAL: Int = 0

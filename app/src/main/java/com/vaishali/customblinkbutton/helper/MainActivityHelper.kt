@@ -1,13 +1,10 @@
 package com.vaishali.customblinkbutton.helper
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.Toast
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.vaishali.customblinkbutton.R
 import com.vaishali.customtoastmessage.Snacking
-import com.vaishali.customtoastmessage.SnackingState
 
 
 class MainActivityHelper(parentView: View) {
@@ -54,13 +51,16 @@ class MainActivityHelper(parentView: View) {
     fun snackBarCloseAction() {
         parentView?.let {
             Snacking.Builder(it, "Click to dismiss message")
-                .actionD(com.vaishali.customtoastmessage.R.drawable.ic_close, R.color.teal_200, object : Snacking.Callback {
-                    override fun onActionClick(snackBar: Snacking?) {
-                        snackBar?.dismiss()
-                        toast("Action Click")
-                    }
+                .actionD(
+                    com.vaishali.customtoastmessage.R.drawable.ic_close,
+                    R.color.teal_200,
+                    object : Snacking.Callback {
+                        override fun onActionClick(snackBar: Snacking?) {
+                            snackBar?.dismiss()
+                            toast("Action Click")
+                        }
 
-                }).build().show()
+                    }).build().show()
         }
     }
 
@@ -91,17 +91,19 @@ class MainActivityHelper(parentView: View) {
                 .backgroundColor(R.color.purple_200).build().show()
         }
     }
+
     fun snackBarBorder() {
         parentView?.let {
             Snacking.Builder(it, "This message with border")
-                .border(R.dimen.snack_bar_border_size, R.color.colorPrimary).useMargin()
+                .border(2F, R.color.colorPrimary).useMargin()
                 .cornerRadius(10F).build().show()
         }
     }
 
     fun snackBarTextColor() {
         parentView?.let {
-            Snacking.Builder(it, "This is custom text color").textColor(R.color.teal_200).build().show()
+            Snacking.Builder(it, "This is custom text color").textColor(R.color.teal_200).build()
+                .show()
         }
     }
 
@@ -121,15 +123,15 @@ class MainActivityHelper(parentView: View) {
 
     fun snackBarPosition() {
         parentView?.let {
-            Snacking.State(it, SnackingState.WARNING).message("This message is on top position")
-                .icon(R.drawable.ic_info).position(Snacking.TOP).useMargin(true)
+            Snacking.Builder(it, "This message is on top position")
+                .icon(R.drawable.ic_info).position(Snacking.TOP)
                 .cornerRadius(25F)
-                .border(R.dimen.snack_bar_border_size).action("Cancel", object : Snacking.Callback {
+                .border(1F).action("Cancel", object : Snacking.Callback {
                     override fun onActionClick(snackBar: Snacking?) {
                         toast("Action Click")
 
                     }
-                }).show()
+                }).build().show()
         }
     }
 

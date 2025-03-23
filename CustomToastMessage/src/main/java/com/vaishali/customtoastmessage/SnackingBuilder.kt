@@ -176,13 +176,8 @@ open class SnackingBuilder {
         return this
     }
 
-    fun border(@DimenRes borderRes: Int, @ColorRes colorRes: Int): SnackingBuilder {
-        snackBar.border(borderRes, colorRes)
-        return this
-    }
-
-    fun border(borderSize: Float, colorCode: String): SnackingBuilder {
-        snackBar.border(borderSize, colorCode)
+    fun border(borderSize: Float, @ColorRes colorRes: Int = R.color.quick_snack_bar_color_black): SnackingBuilder {
+        snackBar.border(borderSize, colorRes)
         return this
     }
 
