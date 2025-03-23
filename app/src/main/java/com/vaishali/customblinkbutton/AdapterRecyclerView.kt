@@ -1,4 +1,4 @@
-package com.vaishali.customblinkbutton.helper
+package com.vaishali.customblinkbutton
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.vaishali.customblinkbutton.R
 
 class AdapterRecyclerView constructor(
     private val callback: Callback

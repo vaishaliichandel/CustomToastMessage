@@ -1,78 +1,197 @@
 package com.vaishali.customblinkbutton
 
 import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.vaishali.customblinkbutton.helper.AdapterRecyclerView
-import com.vaishali.customblinkbutton.helper.MainActivityHelper
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.vaishali.customblinkbutton.databinding.ActivityMainBinding
+import com.vaishali.customtoastmessage.Snacking
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var titles: Array<String>? = null
-    private var helper: MainActivityHelper? = null
-
+    private var titles = arrayListOf<String>()
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val parentView: View = findViewById(R.id.parentView)
-        helper = MainActivityHelper(parentView)
-
-        val recyclerView = findViewById<RecyclerView>(R.id.act_main_recyclerView)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val adapter = AdapterRecyclerView(callback())
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-
-        titles = arrayOf(
-            "Basic",
-            "With Elevation",
-            "With Icon with custom tint",
-            "With Action",
-            "With close icon",
-            "Corner Radius",
-            "Corner Radius (Custom)",
-            "With Border",
+        binding.rvSnackBarItems.adapter = adapter
+        titles = arrayListOf(
+            "Basic SnackBar",
+            "SnackBar With Elevation",
+            "SnackBar With Icon with custom tint",
+            "SnackBar With Action",
+            "SnackBar With close icon",
+            "SnackBar with Corner Radius",
+            "SnackBar with Corner Radius (Custom)",
+            "SnackBar With Border",
             "Background Color",
-            "Text Color",
-            "Text Style",
-            "Custom Font Family",
-            "Top Position",
-            "Message Max Lines",
-            "Without Margin",
+            "SnackBar with Text Color",
+            "SnackBar with Text Style",
+            "SnackBar with Custom Font Family",
+            "SnackBar with Top Position",
+            "SnackBar with Message Max Lines",
+            "SnackBar with Without Margin",
         )
-        val list: MutableList<String> = ArrayList()
-        titles?.let {
-            list.addAll(it)
-            adapter.setList(list)
-        }
+        adapter.setList(titles)
     }
 
     private fun callback(): AdapterRecyclerView.Callback {
         return object : AdapterRecyclerView.Callback {
             override fun onItemClick(message: String?) {
                 when (message) {
-                    titles?.get(0) -> { helper?.snackBarBasic() }
-                    titles?.get(1) -> { helper?.snackBarWithElevation() }
-                    titles?.get(2) -> { helper?.snackBarIcon() }
-                    titles?.get(3) -> { helper?.snackBarAction() }
-                    titles?.get(4) -> { helper?.snackBarCloseAction() }
-                    titles?.get(5) -> { helper?.snackBarCorner() }
-                    titles?.get(6) -> { helper?.snackBarCornerCustom() }
-                    titles?.get(7) -> { helper?.snackBarBorder() }
-                    titles?.get(8) -> { helper?.snackBarBackground() }
-                    titles?.get(9) -> { helper?.snackBarTextColor() }
-                    titles?.get(10) -> { helper?.snackBarBold() }
-                    titles?.get(11) -> { helper?.snackBarFont() }
-                    titles?.get(12) -> { helper?.snackBarPosition() }
-                    titles?.get(13) -> { helper?.snackBarMaxLines() }
-                    titles?.get(14) -> { helper?.snackWithoutMargin() }
+                    titles[0] -> {
+                        Snacking.Builder(binding.root, "Hello! this is basic message")
+                            .build()
+                            .show()
+                    }
+
+                    titles[1] -> {
+                        Snacking.Builder(binding.root, "Hello! this is basic message")
+                            .elevation(5F)
+                            .build()
+                            .show()
+
+                    }
+
+                    titles[2] -> {
+                        Snacking.Builder(binding.root, "This message with icon")
+                            .icon(R.drawable.ic_info, R.color.teal_200)
+                            .build()
+                            .show()
+                    }
+
+                    titles[3] -> {
+                        Snacking.Builder(binding.root, "Click to dismiss message")
+                            .action("Dismiss", R.color.teal_200, object : Snacking.Callback {
+                                override fun onActionClick(snackBar: Snacking?) {
+                                    snackBar?.dismiss()
+                                    showToast()
+                                }
+
+                            })
+                            .build()
+                            .show()
+                    }
+
+                    titles[4] -> {
+                        Snacking.Builder(binding.root, "Click to dismiss message")
+                            .actionD(R.drawable.ic_close,
+                                R.color.teal_200,
+                                object : Snacking.Callback {
+                                    override fun onActionClick(snackBar: Snacking?) {
+                                        snackBar?.dismiss()
+                                        showToast()
+                                    }
+
+                                })
+                            .build()
+                            .show()
+                    }
+
+                    titles[5] -> {
+                        Snacking.Builder(binding.root, "This message with corner")
+                            .cornerRadius(30F)
+                            .build()
+                            .show()
+                    }
+
+                    titles[6] -> {
+                        Snacking.Builder(binding.root, "This message with custom corner")
+                            .useMargin().cornerRadius(
+                                R.dimen.snack_bar_corner_radius,
+                                0,
+                                0,
+                                R.dimen.snack_bar_corner_radius
+                            )
+                            .build()
+                            .show()
+                    }
+
+                    titles[7] -> {
+                        Snacking.Builder(binding.root, "This message with border")
+                            .border(2F, R.color.colorPrimary)
+                            .useMargin()
+                            .cornerRadius(10F)
+                            .build()
+                            .show()
+                    }
+
+                    titles[8] -> {
+                        Snacking.Builder(binding.root, "This is custom background color")
+                            .backgroundColor(R.color.purple_200)
+                            .build()
+                            .show()
+                    }
+
+                    titles[9] -> {
+                        Snacking.Builder(binding.root, "This is custom text color")
+                            .textColor(R.color.teal_200)
+                            .build()
+                            .show()
+                    }
+
+                    titles[10] -> {
+                        Snacking.Builder(binding.root, "This is bold italic text")
+                            .fontFamily(R.font.montserrat)
+                            .textStyle(Snacking.BOLD_ITALIC)
+                            .build()
+                            .show()
+                    }
+
+                    titles[11] -> {
+                        Snacking.Builder(binding.root, "This is custom font family")
+                            .fontFamily(R.font.montserrat)
+                            .build()
+                            .show()
+                    }
+
+                    titles[12] -> {
+                        Snacking.Builder(binding.root, "This message is on top position")
+                            .icon(R.drawable.ic_info)
+                            .position(Snacking.TOP)
+                            .cornerRadius(25F)
+                            .border(1F)
+                            .action("Cancel", object : Snacking.Callback {
+                                override fun onActionClick(snackBar: Snacking?) {
+                                    showToast()
+                                }
+                            })
+                            .build()
+                            .show()
+                    }
+
+                    titles[13] -> {
+                        Snacking.Builder(
+                            binding.root,
+                            "This is long message, this is long message, this is long message, this is long message, this is long message, this is long message"
+                        )
+                            .action("Long Button Text", object : Snacking.Callback {
+                                override fun onActionClick(snackBar: Snacking?) {
+                                    showToast()
+
+                                }
+                            })
+                            .messageMaxLines(2)
+                            .build()
+                            .show()
+                    }
+
+                    titles[14] -> {
+                        Snacking.Builder(binding.root, "This is a message")
+                            .removeMargin()
+                            .build()
+                            .show()
+                    }
                 }
             }
         }
+    }
+
+
+    private fun showToast() {
+        Toast.makeText(this, "Action Click", Toast.LENGTH_SHORT).show()
     }
 
 }

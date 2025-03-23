@@ -11,17 +11,10 @@ import com.vaishali.customtoastmessage.Snacking.LandscapeStyle
 open class SnackingBuilder {
     private val snackBar: Snacking
 
-    constructor(parentView: View) {
-        snackBar = Snacking(parentView)
-        snackBar.useMargin()
-        snackBar.backgroundColor(R.color.quick_snack_bar_color_white)
-        snackBar.cornerRadius(10F)
-    }
-
     constructor(parentView: View, message: String?) {
         snackBar = Snacking(parentView, message)
         snackBar.useMargin()
-        snackBar.backgroundColor(R.color.quick_snack_bar_color_white)
+        snackBar.backgroundColor(R.color.colorBlue)
         snackBar.cornerRadius(10F)
 
     }
@@ -29,7 +22,7 @@ open class SnackingBuilder {
     constructor(parentView: View, message: String?, @DrawableRes iconRes: Int) {
         snackBar = Snacking(parentView, message, iconRes)
         snackBar.useMargin()
-        snackBar.backgroundColor(R.color.quick_snack_bar_color_white)
+        snackBar.backgroundColor(R.color.colorBlue)
         snackBar.cornerRadius(10F)
 
     }

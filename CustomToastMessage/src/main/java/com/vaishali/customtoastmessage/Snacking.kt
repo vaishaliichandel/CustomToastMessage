@@ -133,7 +133,6 @@ class Snacking {
         rotation = getRotation(context)
 
        binding = QuickSnackBarCustomLayoutBinding.inflate(inflater)
-        initView(binding.root)
         val mMessage = if (message == null) "This is null message" else message
         binding.textMessage.text = mMessage
         applyIcon()
@@ -192,8 +191,6 @@ class Snacking {
 
     }
 
-    private fun initView(layout: View) {
-    }
 
     fun message(@StringRes messageRes: Int) {
         this.message = getString(messageRes)
@@ -528,7 +525,7 @@ class Snacking {
             }
 
             binding.textMessage.post {
-                if (binding.textMessage.lineCount > 2 || (binding.textAction.length() ?: 0) > 10) {
+                if (binding.textMessage.lineCount > 2 || binding.textAction.length() > 10) {
                     val paramsIcon =
                         binding.imgIcon.layoutParams as RelativeLayout.LayoutParams
                     paramsIcon.removeRule(RelativeLayout.CENTER_VERTICAL)
@@ -562,7 +559,7 @@ class Snacking {
                     paramsAction.addRule(RelativeLayout.BELOW, binding.textMessage.id)
 
                     binding.textAction.layoutParams = paramsAction
-                    val getActionPaddingVertical = binding.textAction.paddingTop ?: 0
+                    val getActionPaddingVertical = binding.textAction.paddingTop
                     val count = getActionPaddingVertical / 2.5f
                     val actionPaddingVertical = getActionPaddingVertical - count.toInt()
                     binding.textAction.setPadding(
@@ -999,7 +996,12 @@ class Snacking {
     private fun getRotation(context: Context): Int {
         var angle = 0
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val rotation = windowManager.defaultDisplay.rotation
+        val rotation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.display.rotation
+        } else {
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.rotation
+        }
         when (rotation) {
             Surface.ROTATION_90 -> angle = -90
             Surface.ROTATION_180 -> angle = 180
@@ -1034,7 +1036,6 @@ class Snacking {
 
     // Builder Class
     class Builder : SnackingBuilder {
-        constructor(parentView: View) : super(parentView)
         constructor(parentView: View, message: String?) : super(parentView, message)
         constructor(parentView: View, message: String?, iconRes: Int) : super(
             parentView,

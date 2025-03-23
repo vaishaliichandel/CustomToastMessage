@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/parentView"
     android:background="#F4F4F4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,12 +10,12 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/act_main_recyclerView"
+        android:id="@+id/rvSnackBarItems"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="30dp"
         android:paddingBottom="100dp"
-        tools:itemCount="14"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_list" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

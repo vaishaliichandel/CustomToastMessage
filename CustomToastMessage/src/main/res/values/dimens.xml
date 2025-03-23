@@ -2,14 +2,12 @@
 <resources>
 
     <dimen name="quick_snack_bar_default_elevation">3dp</dimen>
-    <dimen name="quick_snack_bar_text_size">11sp</dimen>
-    <dimen name="quick_snack_bar_icon_size">22dp</dimen>
+    <dimen name="quick_snack_bar_text_size">12sp</dimen>
     <dimen name="quick_snack_bar_icon_margin_start">12dp</dimen>
     <dimen name="quick_snack_bar_message_margin_start">8dp</dimen>
     <dimen name="quick_snack_bar_action_padding_vertical">10dp</dimen>
     <dimen name="quick_snack_bar_action_padding">12dp</dimen>
     <dimen name="quick_snack_bar_vertical_padding">16dp</dimen>
-    <dimen name="quick_snack_bar_corner_small">10dp</dimen>
     <dimen name="quick_snack_bar_margin_start_bottom_end">12dp</dimen>
 
 </resources>
