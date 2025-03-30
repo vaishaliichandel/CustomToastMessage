@@ -53,10 +53,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import com.vaishali.customtoastmessage.databinding.QuickSnackBarCustomLayoutBinding
 
-class Snacking {
-    // Properties
-    private val parentView: View
-    private var message: String? = null
+class Snacking(private val parentView: View, private var message: String?) {
     lateinit var binding: QuickSnackBarCustomLayoutBinding
 
     @DrawableRes
@@ -90,10 +87,6 @@ class Snacking {
     @Retention(AnnotationRetention.SOURCE)
     annotation class TextStyle
 
-    @IntDef(MATCH, LEFT, CENTER, RIGHT)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class LandscapeStyle
-
     @IntDef(TOP, BOTTOM)
     @Retention(AnnotationRetention.SOURCE)
     annotation class Position
@@ -103,25 +96,9 @@ class Snacking {
     @IntDef(SORT, LONG, INDEFINITE)
     @Retention(AnnotationRetention.SOURCE)
     annotation class Duration {
-//        this.parentView = parentView
-//        init()
     }
 
-    constructor(parentView: View, message: String?) {
-        this.parentView = parentView
-        this.message = message
-        init()
-    }
-
-    constructor(parentView: View) {
-        this.parentView = parentView
-        init()
-    }
-
-    constructor(parentView: View, message: String?, @DrawableRes iconRes: Int) {
-        this.parentView = parentView
-        this.message = message
-        this.iconRes = iconRes
+    init {
         init()
     }
 
@@ -279,7 +256,7 @@ class Snacking {
         binding. textAction.text = getString(actionTextRes)
     }
 
-    fun actionD(@DrawableRes actionTextRes: Int, callback: Callback) {
+    fun actionClose(@DrawableRes actionTextRes: Int, callback: Callback) {
         this.callback = callback
         binding.closeIcon.visibility = View.VISIBLE
         binding.closeIcon.setImageResource(actionTextRes)
@@ -297,8 +274,8 @@ class Snacking {
         if (color != 0) binding.textAction.setTextColor(color)
     }
 
-    fun actionD(@DrawableRes actionTextRes: Int, @ColorRes textColorRes: Int, callback: Callback) {
-        actionD(actionTextRes, callback)
+    fun actionClose(@DrawableRes actionTextRes: Int, @ColorRes textColorRes: Int, callback: Callback) {
+        actionClose(actionTextRes, callback)
         val color = getColor(textColorRes)
         if (color != 0) binding.textAction.setTextColor(color)
     }
@@ -332,18 +309,6 @@ class Snacking {
         cornerTopRight = topRight
         cornerBottomLeft = bottomLeft
         cornerBottomRight = bottomRight
-    }
-
-    fun cornerRadius(
-        @DimenRes topLeftRes: Int,
-        @DimenRes topRightRes: Int,
-        @DimenRes bottomLeftRes: Int,
-        @DimenRes bottomRightRes: Int
-    ) {
-        cornerTopLeft = getDimen(topLeftRes)
-        cornerTopRight = getDimen(topRightRes)
-        cornerBottomLeft = getDimen(bottomLeftRes)
-        cornerBottomRight = getDimen(bottomRightRes)
     }
 
     private fun cornerRadii(
@@ -499,7 +464,6 @@ class Snacking {
             } else {
                 val size = getDimenInt(R.dimen.quick_snack_bar_margin_start_bottom_end)
                 params.setMargins(size, 0, size, size)
-//                setSnackBarElevation(getDimen(R.dimen.quick_snack_bar_default_elevation))
             }
             snackBar?.view?.layoutParams = params
         }
@@ -719,19 +683,6 @@ class Snacking {
         this.position = position
     }
 
-    fun landscapeStyle(@LandscapeStyle landscapeStyle: Int) {
-        this.landscapeStyle = landscapeStyle
-    }
-
-    fun landscapeWidthRes(@DimenRes widthRes: Int) {
-        val width = getDimen(widthRes)
-        if (width > 0) this.landscapeWidth = width.toInt()
-    }
-
-    fun landscapeWidth(width: Int) {
-        this.landscapeWidth = width
-    }
-
     fun fontFamily(@FontRes fontRes: Int) {
         try {
             val typeface =
@@ -761,16 +712,6 @@ class Snacking {
            binding. textMessage.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
            binding. textAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
         }
-    }
-
-    fun swipeToDismiss(swipeToDismiss: Boolean) {
-        if (!swipeToDismiss) snackBar?.setBehavior(
-            object : BaseTransientBottomBar.Behavior() {
-                override fun canSwipeDismissView(child: View): Boolean {
-                    return false
-                }
-            }
-        )
     }
 
     private fun applyBackground() {
@@ -828,7 +769,7 @@ class Snacking {
     }
 
     fun show() {
-        if (!(snackBar?.isShown == true)) {
+        if (snackBar?.isShown != true) {
             applyMargin()
             applyPosition()
             applyBackground()
@@ -1034,18 +975,7 @@ class Snacking {
         fun onActionClick(snackBar: Snacking?)
     }
 
-    // Builder Class
-    class Builder : SnackingBuilder {
-        constructor(parentView: View, message: String?) : super(parentView, message)
-        constructor(parentView: View, message: String?, iconRes: Int) : super(
-            parentView,
-            message,
-            iconRes
-        )
-    }
-
-    // State Class
-//    class State(parentView: View, state: Int) : SnackingState(parentView, state)
+    class Builder(parentView: View, message: String?) : SnackingBuilder(parentView, message)
 
     companion object {
         const val NORMAL: Int = 0

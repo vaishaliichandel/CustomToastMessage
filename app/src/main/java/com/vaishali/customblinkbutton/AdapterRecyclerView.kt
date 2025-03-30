@@ -2,35 +2,31 @@ package com.vaishali.customblinkbutton
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.vaishali.customblinkbutton.AdapterRecyclerView.ListHolder
+import com.vaishali.customblinkbutton.databinding.ItemListBinding
 
-class AdapterRecyclerView constructor(
+class AdapterRecyclerView(
     private val callback: Callback
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<ListHolder>() {
 
     private var list: MutableList<String> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
-        return ListHolder(
-            inflater.inflate(R.layout.item_list, parent, false)
-        )
+        val view = ItemListBinding.inflate(inflater, parent, false)
+        return ListHolder(view)
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ListHolder) {
-            holder.txtTitle.text = list[position]
-            holder.parent.setOnClickListener {
-                callback.onItemClick(list[position])
-            }
+    override fun onBindViewHolder(holder: ListHolder, position: Int) {
+        holder.binding.tvTitle.text = list[position]
+        holder.binding.root.setOnClickListener {
+            callback.onItemClick(list[position])
         }
     }
 
@@ -40,15 +36,7 @@ class AdapterRecyclerView constructor(
         notifyDataSetChanged()
     }
 
-    private class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val parent: RelativeLayout
-        val txtTitle: TextView
-
-        init {
-            parent = itemView.findViewById(R.id.item_list_parent)
-            txtTitle = itemView.findViewById(R.id.item_list_txtTitle)
-        }
-    }
+    class ListHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root)
 
     interface Callback {
         fun onItemClick(message: String?)

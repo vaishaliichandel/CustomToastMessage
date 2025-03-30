@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             "SnackBar with Custom Font Family",
             "SnackBar with Top Position",
             "SnackBar with Message Max Lines",
+            "SnackBar with INDEFINITE Duration",
             "SnackBar with Without Margin",
         )
         adapter.setList(titles)
@@ -42,9 +43,9 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(message: String?) {
                 when (message) {
                     titles[0] -> {
-                        Snacking.Builder(binding.root, "Hello! this is basic message")
-                            .build()
+                        Snacking.Builder(binding.root, "Hello! this is basic message").build()
                             .show()
+
                     }
 
                     titles[1] -> {
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
                     titles[4] -> {
                         Snacking.Builder(binding.root, "Click to dismiss message")
-                            .actionD(R.drawable.ic_close,
+                            .actionClose(R.drawable.ic_close,
                                 R.color.teal_200,
                                 object : Snacking.Callback {
                                     override fun onActionClick(snackBar: Snacking?) {
@@ -99,11 +100,11 @@ class MainActivity : AppCompatActivity() {
 
                     titles[6] -> {
                         Snacking.Builder(binding.root, "This message with custom corner")
-                            .useMargin().cornerRadius(
-                                R.dimen.snack_bar_corner_radius,
-                                0,
-                                0,
-                                R.dimen.snack_bar_corner_radius
+                            .cornerRadius(
+                                15f,
+                                0f,
+                                0f,
+                                15f
                             )
                             .build()
                             .show()
@@ -112,7 +113,6 @@ class MainActivity : AppCompatActivity() {
                     titles[7] -> {
                         Snacking.Builder(binding.root, "This message with border")
                             .border(2F, R.color.colorPrimary)
-                            .useMargin()
                             .cornerRadius(10F)
                             .build()
                             .show()
@@ -179,6 +179,13 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     titles[14] -> {
+                        Snacking.Builder(binding.root, "This is a message with INDEFINITE duration")
+                            .duration(Snacking.INDEFINITE)
+                            .build()
+                            .show()
+                    }
+
+                    titles[15] -> {
                         Snacking.Builder(binding.root, "This is a message")
                             .removeMargin()
                             .build()
@@ -189,9 +196,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun showToast() {
         Toast.makeText(this, "Action Click", Toast.LENGTH_SHORT).show()
     }
-
 }

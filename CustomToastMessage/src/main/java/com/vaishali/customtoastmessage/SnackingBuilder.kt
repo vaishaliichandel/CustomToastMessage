@@ -6,35 +6,14 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.FontRes
 import androidx.annotation.StringRes
-import com.vaishali.customtoastmessage.Snacking.LandscapeStyle
 
-open class SnackingBuilder {
-    private val snackBar: Snacking
+open class SnackingBuilder(parentView: View, message: String?) {
+    private val snackBar: Snacking = Snacking(parentView, message)
 
-    constructor(parentView: View, message: String?) {
-        snackBar = Snacking(parentView, message)
+    init {
         snackBar.useMargin()
         snackBar.backgroundColor(R.color.colorBlue)
         snackBar.cornerRadius(10F)
-
-    }
-
-    constructor(parentView: View, message: String?, @DrawableRes iconRes: Int) {
-        snackBar = Snacking(parentView, message, iconRes)
-        snackBar.useMargin()
-        snackBar.backgroundColor(R.color.colorBlue)
-        snackBar.cornerRadius(10F)
-
-    }
-
-    fun message(@StringRes messageRes: Int): SnackingBuilder {
-        snackBar.message(messageRes)
-        return this
-    }
-
-    fun message(message: String?): SnackingBuilder {
-        snackBar.message(message)
-        return this
     }
 
     fun messageMaxLines(lines: Int): SnackingBuilder {
@@ -115,12 +94,12 @@ open class SnackingBuilder {
         return this
     }
 
-    fun actionD(
+    fun actionClose(
         @DrawableRes actionTextRes: Int,
         @ColorRes textColorRes: Int,
         callback: Snacking.Callback
     ): SnackingBuilder {
-        snackBar.actionD(actionTextRes, textColorRes, callback)
+        snackBar.actionClose(actionTextRes, textColorRes, callback)
         return this
     }
 
@@ -144,18 +123,6 @@ open class SnackingBuilder {
 
     fun cornerRadius(cornerRadius: Float): SnackingBuilder {
         snackBar.cornerRadius(cornerRadius)
-        return this
-    }
-
-    fun cornerRadius(
-        @DimenRes topLeftRes: Int,
-        @DimenRes topRightRes: Int,
-        @DimenRes bottomLeftRes: Int,
-        @DimenRes bottomRightRes: Int
-    ): SnackingBuilder {
-        snackBar.cornerRadius(
-            topLeftRes, topRightRes, bottomLeftRes, bottomRightRes
-        )
         return this
     }
 
@@ -184,23 +151,8 @@ open class SnackingBuilder {
         return this
     }
 
-    fun useMargin(): SnackingBuilder {
-        snackBar.useMargin()
-        return this
-    }
-
-    fun withCloseIcon(): SnackingBuilder {
-        snackBar.useMargin()
-        return this
-    }
-
     fun height(height: Int): SnackingBuilder {
         snackBar.height(height)
-        return this
-    }
-
-    fun anchorView(anchorView: View?): SnackingBuilder {
-        snackBar.anchorView(anchorView)
         return this
     }
 
@@ -226,26 +178,6 @@ open class SnackingBuilder {
 
     fun position(@Snacking.Position position: Int): SnackingBuilder {
         snackBar.position(position)
-        return this
-    }
-
-    fun landscapeStyle(@LandscapeStyle landscapeStyle: Int): SnackingBuilder {
-        snackBar.landscapeStyle(landscapeStyle)
-        return this
-    }
-
-    fun landscapeWidthRes(@DimenRes landscapeWidthRes: Int): SnackingBuilder {
-        snackBar.landscapeWidthRes(landscapeWidthRes)
-        return this
-    }
-
-    fun landscapeWidth(landscapeWidth: Int): SnackingBuilder {
-        snackBar.landscapeWidth(landscapeWidth)
-        return this
-    }
-
-    fun swipeToDismiss(swipeToDismiss: Boolean): SnackingBuilder {
-        snackBar.swipeToDismiss(swipeToDismiss)
         return this
     }
 
