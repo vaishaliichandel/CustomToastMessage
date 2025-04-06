@@ -975,8 +975,6 @@ class Snacking(private val parentView: View, private var message: String?) {
         fun onActionClick(snackBar: Snacking?)
     }
 
-    class Builder(parentView: View, message: String?) : SnackingBuilder(parentView, message)
-
     companion object {
         const val NORMAL: Int = 0
         const val BOLD: Int = 1
